@@ -4,31 +4,23 @@ import {
   Square, 
   Volume2, 
   VolumeX, 
-  Zap, 
-  Beaker, 
-  AlertTriangle, 
-  RotateCcw,
   Settings,
   Languages
 } from 'lucide-react';
 import { Button } from '@/components/dashboard/ui/button';
 import { Card } from '@/components/dashboard/ui/card';
-import { Badge } from '@/components/dashboard/ui/badge';
 import { Slider } from '@/components/dashboard/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/dashboard/ui/select';
 import { VoiceSettings, Language, LanguageOption } from '@/types';
-import { demoScenarios } from '@/data/scenarios';
 import { cn } from '@/lib/utils';
 
 interface ControlPanelProps {
   isMonitoring: boolean;
   onStartMonitoring: () => void;
   onStopMonitoring: () => void;
-  onRunScenario: (scenarioName: string) => void;
   voiceSettings: VoiceSettings;
   onVoiceSettingsChange: (settings: Partial<VoiceSettings>) => void;
   onTestVoice: () => void;
-  activeScenario?: string;
 }
 
 const languages: LanguageOption[] = [
@@ -50,39 +42,11 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   isMonitoring,
   onStartMonitoring,
   onStopMonitoring,
-  onRunScenario,
   voiceSettings,
   onVoiceSettingsChange,
   onTestVoice,
-  activeScenario,
 }) => {
   const [showVoiceSettings, setShowVoiceSettings] = useState(false);
-
-  const getScenarioSeverityColor = (severity: string) => {
-    switch (severity) {
-      case 'critical':
-        return 'bg-destructive text-destructive-foreground';
-      case 'high':
-        return 'bg-warning text-warning-foreground';
-      case 'medium':
-        return 'bg-warning/70 text-warning-foreground';
-      default:
-        return 'bg-secondary text-secondary-foreground';
-    }
-  };
-
-  const getScenarioIcon = (name: string) => {
-    if (name.includes('Contamination') || name.includes('Chemical')) {
-      return <Beaker className="h-4 w-4" />;
-    }
-    if (name.includes('Emergency')) {
-      return <AlertTriangle className="h-4 w-4" />;
-    }
-    if (name.includes('Normal')) {
-      return <RotateCcw className="h-4 w-4" />;
-    }
-    return <Zap className="h-4 w-4" />;
-  };
 
   return (
     <div className="space-y-6">
@@ -173,7 +137,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                   <label className="text-sm font-medium text-foreground">Language</label>
                   <Select
                     value={voiceSettings.language}
-                    onValueChange={(value: Language) => onVoiceSettingsChange({ language: value })}
+                    onValueChange={(value) => onVoiceSettingsChange({ language: value as Language })}
                   >
                     <SelectTrigger>
                       <SelectValue />
@@ -277,69 +241,6 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
             )}
           </div>
         </div>
-      </Card>
-
-      {/* Demo Scenarios */}
-      <Card className="glass-card p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <Zap className="h-6 w-6 text-primary" />
-          <div>
-            <h2 className="text-xl font-semibold text-foreground">
-              Demo Scenarios
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Simulate various water quality conditions for testing
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {demoScenarios.map((scenario, index) => (
-            <Button
-              key={scenario.name}
-              variant={activeScenario === scenario.name ? "default" : "outline"}
-              onClick={() => onRunScenario(scenario.name)}
-              className={cn(
-                "h-auto p-4 text-left justify-start transition-all duration-300 animate-slide-up",
-                activeScenario === scenario.name && "ring-2 ring-primary"
-              )}
-              style={{ animationDelay: `${index * 100}ms` }}
-            >
-              <div className="flex items-start gap-3 w-full">
-                <div className="flex-shrink-0 mt-1">
-                  {getScenarioIcon(scenario.name)}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium text-foreground">
-                      {scenario.name}
-                    </span>
-                    <Badge className={getScenarioSeverityColor(scenario.severity)}>
-                      {scenario.severity}
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-muted-foreground text-left">
-                    {scenario.description}
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Duration: {scenario.duration}s
-                  </p>
-                </div>
-              </div>
-            </Button>
-          ))}
-        </div>
-
-        {activeScenario && (
-          <div className="mt-4 p-3 bg-primary/10 border border-primary/20 rounded-lg animate-slide-down">
-            <div className="flex items-center gap-2 text-primary">
-              <Zap className="h-4 w-4 animate-pulse" />
-              <span className="text-sm font-medium">
-                Running scenario: {activeScenario}
-              </span>
-            </div>
-          </div>
-        )}
       </Card>
     </div>
   );

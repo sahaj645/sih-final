@@ -285,4 +285,19 @@
       @apply text-base;
     }
   }
+  /* Add to your @layer components section */
+@keyframes village-card-fade {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.village-card-fade {
+  animation: village-card-fade 0.5s ease-out;
+}
 }

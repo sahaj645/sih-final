@@ -46,7 +46,7 @@ const VillageNetwork: React.FC<VillageNetworkProps> = ({ villages }) => {
   };
 
   return (
-    <div className="glass-card p-6">
+    <div>
       <div className="flex items-center gap-3 mb-6">
         <MapPin className="h-6 w-6 text-primary" />
         <div>
@@ -59,12 +59,12 @@ const VillageNetwork: React.FC<VillageNetworkProps> = ({ villages }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="space-y-4">
         {villages.map((village, index) => (
           <div
             key={village.id}
             className={cn(
-              "p-4 rounded-lg border-2 transition-all duration-300 hover:shadow-lg animate-fade-in",
+              "p-4 rounded-lg border-2 transition-all duration-300 hover:shadow-lg village-card-fade",
               village.status === 'Safe' ? "border-success/30 bg-success/5 hover:border-success/50" :
               village.status === 'Caution' ? "border-warning/30 bg-warning/5 hover:border-warning/50" :
               village.status === 'Warning' ? "border-warning/30 bg-warning/5 hover:border-warning/50" :
@@ -76,7 +76,7 @@ const VillageNetwork: React.FC<VillageNetworkProps> = ({ villages }) => {
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Droplets className={cn("h-5 w-5", getStatusColor(village.status))} />
-                <h3 className="font-semibold text-foreground">{village.name}</h3>
+                <h3 className="font-semibold text-foreground text-base">{village.name}</h3>
               </div>
               <StatusBadge 
                 variant={getStatusVariant(village.status)}
@@ -86,51 +86,52 @@ const VillageNetwork: React.FC<VillageNetworkProps> = ({ villages }) => {
               </StatusBadge>
             </div>
 
-            {/* Key Metrics */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Water Quality</span>
-                  <span className={cn("font-medium", getStatusColor(village.status))}>
-                    {village.waterQuality.overall}%
-                  </span>
+            {/* Key Metrics - Simplified */}
+            <div className="space-y-3 mb-4">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Water Quality</span>
+                <span className={cn("font-medium text-base", getStatusColor(village.status))}>
+                  {village.waterQuality.overall}%
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">pH Level</span>
+                    <span className="font-medium text-foreground">
+                      {village.sensorData.pH.toFixed(1)}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Turbidity</span>
+                    <span className="font-medium text-foreground">
+                      {village.sensorData.turbidity.toFixed(1)} NTU
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">pH Level</span>
-                  <span className="font-medium text-foreground">
-                    {village.sensorData.pH.toFixed(1)}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">E.coli</span>
-                  <span className={cn(
-                    "font-medium",
-                    village.sensorData.eColi > 5 ? "text-destructive" : "text-success"
-                  )}>
-                    {village.sensorData.eColi.toFixed(0)} CFU
-                  </span>
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Temperature</span>
+                    <span className="font-medium text-foreground">
+                      {village.sensorData.temperature.toFixed(1)}°C
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-muted-foreground">Population</span>
+                    <span className="font-medium text-foreground">
+                      {village.population.toLocaleString()}
+                    </span>
+                  </div>
                 </div>
               </div>
-
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Turbidity</span>
-                  <span className="font-medium text-foreground">
-                    {village.sensorData.turbidity.toFixed(1)} NTU
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Temperature</span>
-                  <span className="font-medium text-foreground">
-                    {village.sensorData.temperature.toFixed(1)}°C
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">Population</span>
-                  <span className="font-medium text-foreground">
-                    {village.population.toLocaleString()}
-                  </span>
-                </div>
+              <div className="flex items-center justify-between text-sm pt-1">
+                <span className="text-muted-foreground">E.coli Count</span>
+                <span className={cn(
+                  "font-medium",
+                  village.sensorData.eColi > 5 ? "text-destructive" : "text-success"
+                )}>
+                  {village.sensorData.eColi.toFixed(0)} CFU
+                </span>
               </div>
             </div>
 
