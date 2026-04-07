@@ -82,18 +82,16 @@ const Index = () => {
               <VillageNetwork villages={villages} />
             </div>
 
-            <div className="glass-card p-6 h-fit">
-              <ControlPanel
-                isMonitoring={isMonitoring}
-                onStartMonitoring={startMonitoring}
-                onStopMonitoring={stopMonitoring}
-                onRunScenario={runScenario}
-                voiceSettings={voiceSettings}
-                onVoiceSettingsChange={updateVoiceSettings}
-                onTestVoice={testVoice}
-                activeScenario={activeScenario?.name}
-              />
-            </div>
+            <ControlPanel
+              isMonitoring={isMonitoring}
+              onStartMonitoring={startMonitoring}
+              onStopMonitoring={stopMonitoring}
+              onRunScenario={runScenario}
+              voiceSettings={voiceSettings}
+              onVoiceSettingsChange={updateVoiceSettings}
+              onTestVoice={testVoice}
+              activeScenario={activeScenario?.name}
+            />
           </div>
 
           <div className="lg:col-span-6 space-y-6">
@@ -118,17 +116,7 @@ const Index = () => {
               </div>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <h2 className="text-xl font-bold gradient-text">Live Sensor Data</h2>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium text-green-600">Live</span>
-                </div>
-              </div>
-              
-              <SensorPanel village={selectedVillage} />
-            </div>
+            <SensorPanel village={selectedVillage} />
 
             <div className="glass-card p-6">
               <ChartSection 

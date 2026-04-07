@@ -46,7 +46,7 @@ const VillageNetwork: React.FC<VillageNetworkProps> = ({ villages }) => {
   };
 
   return (
-    <div className="glass-card p-6">
+    <div>
       <div className="flex items-center gap-3 mb-6">
         <MapPin className="h-6 w-6 text-primary" />
         <div>
@@ -59,7 +59,7 @@ const VillageNetwork: React.FC<VillageNetworkProps> = ({ villages }) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         {villages.map((village, index) => (
           <div
             key={village.id}
@@ -181,7 +181,7 @@ const VillageNetwork: React.FC<VillageNetworkProps> = ({ villages }) => {
 
       {/* Network Summary */}
       <div className="mt-6 p-4 bg-muted/20 rounded-lg">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        <div className="grid grid-cols-2 gap-4 text-center">
           <div>
             <div className="text-lg font-semibold text-success">
               {villages.filter(v => v.status === 'Safe').length}

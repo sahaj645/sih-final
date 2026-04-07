@@ -88,8 +88,8 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
     <div className="space-y-6">
       {/* Main Controls */}
       <Card className="glass-card p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <Settings className="h-6 w-6 text-primary" />
+        <div className="flex items-start gap-3 mb-6">
+          <Settings className="h-6 w-6 text-primary mt-1" />
           <div>
             <h2 className="text-xl font-semibold text-foreground">
               Control Panel
@@ -281,8 +281,8 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
 
       {/* Demo Scenarios */}
       <Card className="glass-card p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <Zap className="h-6 w-6 text-primary" />
+        <div className="flex items-start gap-3 mb-6">
+          <Zap className="h-6 w-6 text-primary mt-1" />
           <div>
             <h2 className="text-xl font-semibold text-foreground">
               Demo Scenarios
@@ -293,32 +293,34 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3">
           {demoScenarios.map((scenario, index) => (
-            <Button
+            <button
               key={scenario.name}
-              variant={activeScenario === scenario.name ? "default" : "outline"}
               onClick={() => onRunScenario(scenario.name)}
               className={cn(
-                "h-auto p-4 text-left justify-start transition-all duration-300 animate-slide-up",
-                activeScenario === scenario.name && "ring-2 ring-primary"
+                "w-full text-left p-4 rounded-lg border transition-all duration-300 animate-slide-up",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                activeScenario === scenario.name
+                  ? "bg-primary text-primary-foreground border-primary ring-2 ring-primary"
+                  : "bg-background border-input hover:bg-accent hover:text-accent-foreground"
               )}
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className="flex items-start gap-3 w-full">
-                <div className="flex-shrink-0 mt-1">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 mt-0.5">
                   {getScenarioIcon(scenario.name)}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-medium text-foreground">
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <span className="font-medium">
                       {scenario.name}
                     </span>
                     <Badge className={getScenarioSeverityColor(scenario.severity)}>
                       {scenario.severity}
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground text-left">
+                  <p className="text-sm text-muted-foreground">
                     {scenario.description}
                   </p>
                   <p className="text-xs text-muted-foreground mt-1">
@@ -326,7 +328,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
                   </p>
                 </div>
               </div>
-            </Button>
+            </button>
           ))}
         </div>
 
